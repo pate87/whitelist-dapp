@@ -14,7 +14,7 @@ module.exports = {
     },
     hardhat: {
       forking: {
-        url: INFUAR_HTTP_URL,
+        url: process.env.ALCHEMY_POLYGON_KEY,
       }
     },
   },

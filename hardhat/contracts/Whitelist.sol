@@ -8,6 +8,8 @@ contract Whitelist {
     // Max number of whitelisted addresses allowed
     uint8 public maxWhitelistedAddresses;
 
+    event AddAddressToWhitelist(address indexed _address);
+
     // Create a mapping of whitelistedAddresses
     // if an address is whitelisted, we would set it to true, it is false by default for all other addresses.
     mapping(address => bool) public whitelistedAddresses;
@@ -26,22 +28,24 @@ contract Whitelist {
         addAddressToWhitelist - This function adds the address of the sender to the
         whitelist
      */
-    function addAddressToWhitelist() public {
+    function addAddressToWhitelist(address _address) public {
         require(owner == msg.sender, "Only owner can call this function");
 
         // check if the user has already been whitelisted
-        require(!whitelistedAddresses[msg.sender], "The address has already been white listed");
+        require(!whitelistedAddresses[_address], "The address has already been white listed");
 
         // check if the numAddressesWhitelisted < maxWhitelistedAddresses, if not then throw an error.
         require(
             numAddressesWhitelisted < maxWhitelistedAddresses,
-            "The white list is already full"
+            "The whitelist is already full"
         );
 
         // Add the address which called the function to the whitelistedAddress array
-        whitelistedAddresses[msg.sender] = true;
+        whitelistedAddresses[_address] = true;
 
         // Increase the number of whitelisted addresses
         numAddressesWhitelisted++;
+
+        emit AddAddressToWhitelist(_address);
     }
 }
